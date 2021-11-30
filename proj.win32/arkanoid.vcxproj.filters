@@ -27,10 +27,10 @@
     <ClCompile Include="..\Classes\Paddle.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="Engine.cpp">
+    <ClCompile Include="..\Classes\GamePlayLayer.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\GamePlayLayer.cpp">
+    <ClCompile Include="..\Classes\Engine.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
