@@ -19,13 +19,17 @@ public:
 	void touchMoved(cocos2d::Touch* touch, cocos2d::Event* event);
 	void touchEnded(cocos2d::Touch* touch, cocos2d::Event* event);
 
+	virtual void update(float dt);
+
 private:
 	Engine* m_engine;
 	cocos2d::Sprite* m_paddle_sprite;
-	
+	cocos2d::Rect m_inner_gameplay_area;
+	bool m_is_left_half_touched;
+	bool m_is_right_half_touched;
+
 	bool setBoundaries();
 	bool initPaddle();
-	cocos2d::Rect m_inner_gameplay_area;
 };
 
 #endif //__GAMEPLAY_LAYER_H__

@@ -6,7 +6,9 @@ USING_NS_CC;
 GamePlayLayer::GamePlayLayer() : 
     Layer(), 
     m_engine(nullptr),
-    m_paddle_sprite(nullptr)
+    m_paddle_sprite(nullptr),
+    m_is_left_half_touched(false),
+    m_is_right_half_touched(false)
 {}
 
 GamePlayLayer::~GamePlayLayer()
@@ -123,6 +125,8 @@ bool GamePlayLayer::setBoundaries()
     right_bound_sprite->setPosition(right_bound_sprite_x, right_bound_sprite_y);
     this->addChild(right_bound_sprite);
 
+    this->scheduleUpdate();
+
     return true;
 }
 
@@ -157,4 +161,51 @@ void GamePlayLayer::onExit()
     Layer::onExit();
 
     Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
+}
+
+bool GamePlayLayer::touchBegan(Touch* touch, Event* event)
+{
+    if (m_is_left_half_touched || m_is_right_half_touched)
+    {
+        return false;
+    }
+
+    const Size visible_size = Director::getInstance()->getVisibleSize();
+    const Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+    const float half_screen = (origin.x + visible_size.width) * 0.5f;
+
+    const Vec2 touch_location = touch->getLocation();
+
+    if (touch_location.x <= half_screen)
+    {
+        m_is_left_half_touched = true;
+        m_is_right_half_touched = false;
+    }
+    else
+    {
+        m_is_left_half_touched = false;
+        m_is_right_half_touched = true;
+    }
+
+    return true;
+}
+
+void GamePlayLayer::touchMoved(Touch* touch, Event* event)
+{
+    // do nothing
+}
+
+void GamePlayLayer::touchEnded(Touch* touch, Event* event)
+{
+    if (m_is_left_half_touched || m_is_right_half_touched)
+    {
+        m_is_left_half_touched = false;
+        m_is_right_half_touched = false;
+    }
+}
+
+void GamePlayLayer::update(float dt)
+{
+
 }
