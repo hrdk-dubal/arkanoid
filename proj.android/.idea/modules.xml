@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/proj.android.iml" filepath="$PROJECT_DIR$/proj.android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/proj.android.MyCppGame.iml" filepath="$PROJECT_DIR$/.idea/modules/app/proj.android.MyCppGame.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1215461196/proj.android.libcocos2dx.iml" filepath="$PROJECT_DIR$/.idea/modules/1215461196/proj.android.libcocos2dx.iml" />
     </modules>
   </component>
 </project>

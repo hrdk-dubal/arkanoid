@@ -3,12 +3,12 @@ import org.gradle.internal.os.OperatingSystem
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion PROP_COMPILE_SDK_VERSION.toInteger()
+    compileSdkVersion 29
 
     defaultConfig {
         applicationId "org.cocos2dx.MyCppGame"
-        minSdkVersion PROP_MIN_SDK_VERSION
-        targetSdkVersion PROP_TARGET_SDK_VERSION
+        minSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
 

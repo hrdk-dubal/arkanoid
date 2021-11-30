@@ -24,12 +24,12 @@ bool GamePlayScene::init()
     }
 
     auto gameplay_layer = GamePlayLayer::create();
-    if (!gameplay_layer )
+    if (!gameplay_layer)
     {
         return false;
     }
 
-    this->addChild(gameplay_layer);
+    this->addChild(gameplay_layer); 
 
     return true;
 }
