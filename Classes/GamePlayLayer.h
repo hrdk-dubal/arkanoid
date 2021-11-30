@@ -4,9 +4,10 @@
 #include "cocos2d.h"
 #include "Paddle.h"
 
-class GamePlayLayer : cocos2d::Layer
+class GamePlayLayer : public cocos2d::Layer
 {
 public:
+	GamePlayLayer();
 	CREATE_FUNC(GamePlayLayer);
 	virtual bool init();
 

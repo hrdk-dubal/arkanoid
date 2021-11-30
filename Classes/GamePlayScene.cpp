@@ -1,5 +1,6 @@
 #include "GamePlayScene.h"
 #include "SimpleAudioEngine.h"
+#include "GamePlayLayer.h"
 
 USING_NS_CC;
 
@@ -22,8 +23,13 @@ bool GamePlayScene::init()
         return false;
     }
 
-    auto visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    auto gameplay_layer = GamePlayLayer::create();
+    if (!gameplay_layer )
+    {
+        return false;
+    }
+
+    this->addChild(gameplay_layer);
 
     return true;
 }

@@ -12,6 +12,9 @@ public:
     
     // implement the "static create()" method manually
     CREATE_FUNC(GamePlayScene);
+
+private:
+    
 };
 
 #endif // __GAMEPLAY_SCENE_H__
