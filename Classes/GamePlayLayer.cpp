@@ -137,3 +137,24 @@ bool GamePlayLayer::initPaddle()
 
     return true;
 }
+
+void GamePlayLayer::onEnter()
+{
+    Layer::onEnter();
+
+    auto touch_listener = EventListenerTouchOneByOne::create();
+    touch_listener->setSwallowTouches(true);
+    touch_listener->onTouchBegan = CC_CALLBACK_2(GamePlayLayer::touchBegan, this);
+    touch_listener->onTouchMoved = CC_CALLBACK_2(GamePlayLayer::touchMoved, this);
+    touch_listener->onTouchEnded = CC_CALLBACK_2(GamePlayLayer::touchEnded, this);
+
+    auto eventDispatcher = Director::getInstance()->getEventDispatcher();
+    eventDispatcher->addEventListenerWithSceneGraphPriority(touch_listener, this);
+}
+
+void GamePlayLayer::onExit()
+{
+    Layer::onExit();
+
+    Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
+}

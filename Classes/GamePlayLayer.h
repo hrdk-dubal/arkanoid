@@ -12,6 +12,12 @@ public:
 
 	CREATE_FUNC(GamePlayLayer);
 	virtual bool init();
+	virtual void onEnter();
+	virtual void onExit();
+
+	bool touchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
+	void touchMoved(cocos2d::Touch* touch, cocos2d::Event* event);
+	void touchEnded(cocos2d::Touch* touch, cocos2d::Event* event);
 
 private:
 	Engine* m_engine;
