@@ -1,8 +1,21 @@
 #include "GamePlayLayer.h"
+#include "GameSettings.h"
 
 USING_NS_CC;
 
-GamePlayLayer::GamePlayLayer() : Layer() {}
+GamePlayLayer::GamePlayLayer() : 
+    Layer(), 
+    m_engine(nullptr),
+    m_paddle_sprite(nullptr)
+{}
+
+GamePlayLayer::~GamePlayLayer()
+{
+    if (!m_engine)
+    {
+        delete m_engine;
+    }
+}
 
 bool GamePlayLayer::init()
 {
@@ -11,6 +24,30 @@ bool GamePlayLayer::init()
         return false;
     }
 
+    const bool were_boundaries_initialized = setBoundaries();
+    if (!were_boundaries_initialized)
+    {
+        return false;
+    }
+
+    const bool was_paddle_initialized = initPaddle();
+    if (!was_paddle_initialized)
+    {
+        return false;
+    }
+
+    const Vec2 init_paddle_position(m_inner_gameplay_area.getMidX(), GameSettings::m_paddle_height);
+    m_engine = new Engine(
+        init_paddle_position, 
+        m_paddle_sprite,
+        m_inner_gameplay_area.getMaxX(), 
+        m_inner_gameplay_area.getMaxY());
+
+    return true;
+}
+
+bool GamePlayLayer::setBoundaries()
+{
     const Size visible_size = Director::getInstance()->getVisibleSize();
     const Vec2 origin = Director::getInstance()->getVisibleOrigin();
     const Size design_resolution = Director::getInstance()->getOpenGLView()->getDesignResolutionSize();
@@ -42,7 +79,7 @@ bool GamePlayLayer::init()
         printf("Error loading bounds.png for right boundary.");
         return false;
     }
-    
+
     const float bottom = origin.y + ((visible_size.height - design_resolution.height) * 0.5f);
     const float left = origin.x + ((visible_size.width - design_resolution.width) * 0.5f);
     const float top = bottom + design_resolution.height;
@@ -51,11 +88,11 @@ bool GamePlayLayer::init()
 
     const Size bound_sprite_size = top_bound_sprite->getContentSize();
     const Rect inner_gameplay_area(bottom + bound_sprite_size.height,
-                                    left + bound_sprite_size.width,
-                                    top - bound_sprite_size.height,
-                                    right - bound_sprite_size.width);
+        left + bound_sprite_size.width,
+        top - bound_sprite_size.height,
+        right - bound_sprite_size.width);
+    m_inner_gameplay_area = inner_gameplay_area;
 
-    
     const float horizontal_boundary_scale = design_resolution.width / bound_sprite_size.width;
     const float vertical_boundary_scale = design_resolution.height / bound_sprite_size.height;
 
@@ -85,6 +122,18 @@ bool GamePlayLayer::init()
     const float right_bound_sprite_y = gameplay_area.getMidY();
     right_bound_sprite->setPosition(right_bound_sprite_x, right_bound_sprite_y);
     this->addChild(right_bound_sprite);
-    
+
+    return true;
+}
+
+bool GamePlayLayer::initPaddle()
+{
+    m_paddle_sprite = Sprite::create("paddle.png");
+    if (m_paddle_sprite == nullptr)
+    {
+        printf("Error loading bounds.png for top boundary.");
+        return false;
+    }
+
     return true;
 }
