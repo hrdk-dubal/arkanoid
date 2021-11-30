@@ -11,6 +11,11 @@ public:
 	Engine(const cocos2d::Vec2 &paddle_position, cocos2d::Sprite* paddle_sprite,
 		const float left_bound, const float right_bound);
 
+	void acceleratePaddle();
+	void deceleratePaddle();
+
+	void update(const float dt);
+
 private:
 	Paddle m_paddle;
 };

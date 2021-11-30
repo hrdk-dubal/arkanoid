@@ -207,5 +207,18 @@ void GamePlayLayer::touchEnded(Touch* touch, Event* event)
 
 void GamePlayLayer::update(float dt)
 {
+    if (m_engine != nullptr)
+    {
+        m_engine->update(dt);
+    }
 
+    if (m_is_left_half_touched)
+    {
+        m_engine->acceleratePaddle();
+    }
+
+    if (m_is_right_half_touched)
+    {
+        m_engine->deceleratePaddle();
+    }
 }
