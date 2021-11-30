@@ -27,9 +27,6 @@
     <ClCompile Include="..\Classes\Paddle.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="GamePlayLayer.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="Engine.cpp">
       <Filter>src</Filter>
     </ClCompile>
