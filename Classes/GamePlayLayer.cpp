@@ -41,10 +41,17 @@ bool GamePlayLayer::init()
     
     const Vec2 init_paddle_position(inner_gameplay_area.getMidX(), GameSettings::m_paddle_height);
     const Size paddle_size(m_paddle_sprite->getContentSize());
-
-    m_engine = new Engine(inner_gameplay_area, init_paddle_position, paddle_size);
     
-    m_game_view = new GameView(m_engine, m_paddle_sprite);
+    initBall(inner_gameplay_area, init_paddle_position, paddle_size);
+
+    const Vec2 init_ball_position(m_ball_sprite->getPosition());
+    const Size ball_size(m_ball_sprite->getContentSize());
+
+    m_engine = new Engine(inner_gameplay_area, 
+                    init_paddle_position, paddle_size,
+                    init_ball_position, ball_size);
+    
+    m_game_view = new GameView(m_engine, m_paddle_sprite, m_ball_sprite);
 
     createBrickLayout(inner_gameplay_area);
 
@@ -129,7 +136,7 @@ void GamePlayLayer::initBoundarySprites(const Rect &inner_gameplay_area)
     this->scheduleUpdate();
 }
 
-void GamePlayLayer::initPaddle(const Rect& inner_gameplay_area)
+void GamePlayLayer::initPaddle(const Rect &inner_gameplay_area)
 {
     m_paddle_sprite = Sprite::create("paddle.png");
     CCASSERT(m_paddle_sprite != nullptr, "Error loading for paddle sprite.");
@@ -138,6 +145,22 @@ void GamePlayLayer::initPaddle(const Rect& inner_gameplay_area)
         inner_gameplay_area.getMinY() + GameSettings::m_paddle_height);
 
     this->addChild(m_paddle_sprite);
+}
+
+void GamePlayLayer::initBall(const Rect &inner_gameplay_area, 
+    const Vec2 &paddle_position, const Size &paddle_size)
+{
+    m_ball_sprite = Sprite::create("ball.png");
+    CCASSERT(m_ball_sprite != nullptr, "Error loading for ball sprite.");
+    const Size ball_size(m_ball_sprite->getContentSize());
+    const Size half_ball_size = ball_size * 0.5f;
+    const Size half_paddle_size = paddle_size * 0.5f;
+    const Vec2 init_ball_position(paddle_position.x,
+        paddle_position.y + half_paddle_size.height + half_ball_size.height);
+
+    m_ball_sprite->setPosition(init_ball_position);
+
+    this->addChild(m_ball_sprite);
 }
 
 void GamePlayLayer::onEnter()

@@ -27,10 +27,13 @@ private:
 	GameView*			m_game_view;
 	bool				m_is_touch_pressed;
 	cocos2d::Sprite*	m_paddle_sprite;
+	cocos2d::Sprite*	m_ball_sprite;
 
 	cocos2d::Rect calculateGamePlayArea() const;
 	void initBoundarySprites(const cocos2d::Rect &inner_gameplay_area);
-	void initPaddle(const cocos2d::Rect& inner_gameplay_area);
+	void initPaddle(const cocos2d::Rect &inner_gameplay_area);
+	void initBall(const cocos2d::Rect &inner_gameplay_area, 
+		const cocos2d::Vec2 &paddle_position, const cocos2d::Size &paddle_size);
 	void movePaddleBasedOnInput();
 	void createBrickLayout(const cocos2d::Rect& inner_gameplay_area);
 	void createBrick(const BrickType brick_type, const cocos2d::Vec2& position);
