@@ -8,8 +8,7 @@ GamePlayLayer::GamePlayLayer() :
     m_engine(nullptr),
     m_game_view(nullptr),
     m_paddle_sprite(nullptr),
-    m_is_left_half_touched(false),
-    m_is_right_half_touched(false)
+    m_is_touch_pressed(false)
 {}
 
 GamePlayLayer::~GamePlayLayer()
@@ -168,7 +167,7 @@ void GamePlayLayer::onExit()
 
 bool GamePlayLayer::touchBegan(Touch* touch, Event* event)
 {
-    if (m_is_left_half_touched || m_is_right_half_touched)
+    if (m_is_touch_pressed)
     {
         return false;
     }
@@ -182,14 +181,15 @@ bool GamePlayLayer::touchBegan(Touch* touch, Event* event)
 
     if (touch_location.x <= half_screen)
     {
-        m_is_left_half_touched = true;
-        m_is_right_half_touched = false;
+        m_engine->movePaddle(PaddleMovement::move_left);
     }
     else
     {
-        m_is_left_half_touched = false;
-        m_is_right_half_touched = true;
+        m_engine->movePaddle(PaddleMovement::move_right);
     }
+    m_is_touch_pressed = true;
+
+    CCLOG("touch begin");
 
     return true;
 }
@@ -201,10 +201,10 @@ void GamePlayLayer::touchMoved(Touch* touch, Event* event)
 
 void GamePlayLayer::touchEnded(Touch* touch, Event* event)
 {
-    if (m_is_left_half_touched || m_is_right_half_touched)
+    if (m_is_touch_pressed)
     {
-        m_is_left_half_touched = false;
-        m_is_right_half_touched = false;
+        m_is_touch_pressed = false;
+        m_engine->stopPaddle();
     }
 }
 
@@ -216,16 +216,6 @@ void GamePlayLayer::update(float dt)
     }
 
     m_engine->update(dt);
-    
-    if (m_is_left_half_touched)
-    {
-        m_engine->acceleratePaddle();
-    }
-
-    if (m_is_right_half_touched)
-    {
-        m_engine->deceleratePaddle();
-    }
 
     m_game_view->updateView();
 }

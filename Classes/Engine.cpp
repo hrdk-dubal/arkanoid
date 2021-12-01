@@ -7,14 +7,14 @@ Engine::Engine(const Rect &gameplay_area, const Vec2 &paddle_init_position) :
 	m_paddle(paddle_init_position, gameplay_area.getMinX(), gameplay_area.getMaxX())
 {}
 
-void Engine::acceleratePaddle()
+void Engine::movePaddle(const PaddleMovement movement_direction)
 {
-	m_paddle.accelerate();
+	m_paddle.move(movement_direction);
 }
 
-void Engine::deceleratePaddle()
+void Engine::stopPaddle()
 {
-	m_paddle.decelerate();
+	m_paddle.stopPaddle();
 }
 
 void Engine::update(const float dt)

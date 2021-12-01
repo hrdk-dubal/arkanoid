@@ -23,16 +23,15 @@ public:
 	virtual void update(float dt);
 
 private:
-	Engine* m_engine;
-	GameView* m_game_view;
-	cocos2d::Sprite* m_paddle_sprite;
-	
-	bool m_is_left_half_touched;
-	bool m_is_right_half_touched;
+	Engine*				m_engine;
+	GameView*			m_game_view;
+	bool				m_is_touch_pressed;
+	cocos2d::Sprite*	m_paddle_sprite;
 
 	cocos2d::Rect calculateGamePlayArea() const;
 	bool initBoundarySprites(const cocos2d::Rect &inner_gameplay_area);
 	bool initPaddle(const cocos2d::Rect& inner_gameplay_area);
+	void movePaddleBasedOnInput();
 };
 
 #endif //__GAMEPLAY_LAYER_H__
