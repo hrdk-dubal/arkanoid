@@ -53,6 +53,7 @@ list(APPEND GAME_SOURCE
 	 Classes/GameSettings.cpp
 	 Classes/GamePlayScene.cpp
 	 Classes/GamePlayLayer.cpp
+	 Classes/GameView.cpp
 	 Classes/Paddle.cpp
      )
 list(APPEND GAME_HEADER
@@ -61,6 +62,7 @@ list(APPEND GAME_HEADER
 	 Classes/GameSettings.h
 	 Classes/GamePlayScene.h
 	 Classes/GamePlayLayer.h
+	 Classes/GameView.h
 	 Classes/Paddle.h
      )
 

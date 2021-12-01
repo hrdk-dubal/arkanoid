@@ -275,6 +275,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\GamePlayLayer.cpp" />
     <ClCompile Include="..\Classes\GamePlayScene.cpp" />
     <ClCompile Include="..\Classes\GameSettings.cpp" />
+    <ClCompile Include="..\Classes\GameView.cpp" />
     <ClCompile Include="..\Classes\Paddle.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -284,6 +285,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\GamePlayLayer.h" />
     <ClInclude Include="..\Classes\GamePlayScene.h" />
     <ClInclude Include="..\Classes\GameSettings.h" />
+    <ClInclude Include="..\Classes\GameView.h" />
     <ClInclude Include="..\Classes\Paddle.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>

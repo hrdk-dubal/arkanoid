@@ -8,10 +8,11 @@
 class Engine
 {
 public:
-	Engine(cocos2d::Rect &gameplay_area, cocos2d::Sprite* paddle_sprite);
+	Engine(const cocos2d::Rect &gameplay_area, const cocos2d::Vec2 &paddle_init_position);
 
 	void acceleratePaddle();
 	void deceleratePaddle();
+	cocos2d::Vec2 getPaddlePosition() const;
 
 	void update(const float dt);
 

@@ -6,6 +6,7 @@ USING_NS_CC;
 GamePlayLayer::GamePlayLayer() : 
     Layer(), 
     m_engine(nullptr),
+    m_game_view(nullptr),
     m_paddle_sprite(nullptr),
     m_is_left_half_touched(false),
     m_is_right_half_touched(false)
@@ -13,9 +14,16 @@ GamePlayLayer::GamePlayLayer() :
 
 GamePlayLayer::~GamePlayLayer()
 {
-    if (!m_engine)
+    if (m_engine != nullptr)
     {
         delete m_engine;
+        m_engine = nullptr;
+    }
+
+    if (m_game_view != nullptr)
+    {
+        delete m_game_view;
+        m_game_view = nullptr;
     }
 }
 
@@ -40,14 +48,10 @@ bool GamePlayLayer::init()
         return false;
     }
 
-    /*
-    const Vec2 init_paddle_position(m_inner_gameplay_area.getMidX(), GameSettings::m_paddle_height);
-    m_engine = new Engine(
-        init_paddle_position, 
-        m_paddle_sprite,
-        m_inner_gameplay_area.getMaxX(), 
-        m_inner_gameplay_area.getMaxY());
-    */
+    const Vec2 init_paddle_position(inner_gameplay_area.getMidX(), GameSettings::m_paddle_height);
+    m_engine = new Engine(inner_gameplay_area, init_paddle_position);
+    
+    m_game_view = new GameView(m_engine, m_paddle_sprite);
 
     return true;
 }
@@ -120,9 +124,8 @@ bool GamePlayLayer::initBoundarySprites(const Rect &inner_gameplay_area)
     const float right_bound_sprite_y = inner_gameplay_area.getMidY();
     right_bound_sprite->setPosition(right_bound_sprite_x, right_bound_sprite_y);
     this->addChild(right_bound_sprite);
-    
-
-    //this->scheduleUpdate();
+  
+    this->scheduleUpdate();
 
     return true;
 }
@@ -207,12 +210,13 @@ void GamePlayLayer::touchEnded(Touch* touch, Event* event)
 
 void GamePlayLayer::update(float dt)
 {
-    if (!m_engine)
+    if (m_engine == nullptr || m_game_view == nullptr)
     {
         return;
     }
-    m_engine->update(dt);
 
+    m_engine->update(dt);
+    
     if (m_is_left_half_touched)
     {
         m_engine->acceleratePaddle();
@@ -222,4 +226,6 @@ void GamePlayLayer::update(float dt)
     {
         m_engine->deceleratePaddle();
     }
+
+    m_game_view->updateView();
 }

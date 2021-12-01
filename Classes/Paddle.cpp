@@ -2,10 +2,8 @@
 
 USING_NS_CC;
 
-Paddle::Paddle(Sprite* sprite, const float left_bound, 
-	const float right_bound) :
-		m_position(sprite->getPosition()),
-		m_sprite(sprite),
+Paddle::Paddle(const cocos2d::Vec2& init_position, const float left_bound, const float right_bound) :
+		m_position(init_position),
 		m_left_bound(left_bound),
 		m_right_bound(right_bound),
 		m_acceleration_step_value(0.1f),
@@ -86,6 +84,9 @@ void Paddle::calculateMovement(const float dt)
 			m_horizontal_velocity = 0.0f;
 		}
 	}
+}
 
-	m_sprite->setPositionX(m_position.x);
+Vec2 Paddle::getPosition() const
+{
+	return m_position;
 }

@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include "Engine.h"
+#include "GameView.h"
 
 class GamePlayLayer : public cocos2d::Layer
 {
@@ -23,6 +24,7 @@ public:
 
 private:
 	Engine* m_engine;
+	GameView* m_game_view;
 	cocos2d::Sprite* m_paddle_sprite;
 	
 	bool m_is_left_half_touched;
