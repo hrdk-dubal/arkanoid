@@ -51,7 +51,12 @@ bool GamePlayLayer::init()
                     init_paddle_position, paddle_size,
                     init_ball_position, ball_size);
     
-    m_game_view = new GameView(m_engine, m_paddle_sprite, m_ball_sprite);
+    initScoreDisplay();
+    initStartMessage();
+    initRestartMessage();
+
+    m_game_view = new GameView(m_engine, m_paddle_sprite, m_ball_sprite,
+        m_score_display, m_game_start_message, m_game_restart_message);
 
     createBrickLayout(inner_gameplay_area);
 
@@ -163,6 +168,61 @@ void GamePlayLayer::initBall(const Rect &inner_gameplay_area,
     this->addChild(m_ball_sprite);
 }
 
+void GamePlayLayer::initScoreDisplay()
+{
+    Rect visible_area(Director::getInstance()->getVisibleOrigin(),
+        Director::getInstance()->getVisibleSize());
+
+    std::string score_string = "Score: " + m_engine->getScore();
+    m_score_display = Label::create();
+    m_score_display->setString(score_string);
+    m_score_display->setSystemFontSize(36);
+    const float score_position_x = visible_area.getMaxX() - m_score_display->getContentSize().width - GameSettings::m_score_margin;
+    const float score_position_y = visible_area.getMaxY() - m_score_display->getContentSize().height - GameSettings::m_score_margin;
+
+    const Vec2 score_position(score_position_x, score_position_y);
+    m_score_display->setPosition(score_position);
+
+    this->addChild(m_score_display);
+}
+
+void GamePlayLayer::initStartMessage()
+{
+    Rect visible_area(Director::getInstance()->getVisibleOrigin(),
+            Director::getInstance()->getVisibleSize());
+
+    std::string message_string = "Tap anywhere to start the game!";
+    m_game_start_message = Label::create();
+    m_game_start_message->setString(message_string);
+    m_game_start_message->setSystemFontSize(36);
+    const float message_position_x = visible_area.getMidX();
+    const float message_position_y = visible_area.getMidY();
+
+    const Vec2 message_position(message_position_x, message_position_y);
+    m_game_start_message->setPosition(message_position);
+
+    this->addChild(m_game_start_message);
+}
+
+void GamePlayLayer::initRestartMessage()
+{
+    Rect visible_area(Director::getInstance()->getVisibleOrigin(),
+        Director::getInstance()->getVisibleSize());
+
+    std::string message_string = "Game Over! You scored: " + m_engine->getScore();
+    
+    m_game_restart_message = Label::create();
+    m_game_restart_message->setString(message_string);
+    m_game_restart_message->setSystemFontSize(36);
+    const float message_position_x = visible_area.getMidX();
+    const float message_position_y = visible_area.getMidY();
+
+    const Vec2 message_position(message_position_x, message_position_y);
+    m_game_restart_message->setPosition(message_position);
+
+    this->addChild(m_game_restart_message);
+}
+
 void GamePlayLayer::onEnter()
 {
     Layer::onEnter();
@@ -186,29 +246,48 @@ void GamePlayLayer::onExit()
 
 bool GamePlayLayer::touchBegan(Touch* touch, Event* event)
 {
-    if (m_is_touch_pressed)
+    const GameState current_game_state = m_engine->getCurrentState();
+
+    switch (current_game_state)
     {
-        return false;
+        case GameState::game_menu:
+        {
+            m_engine->startGame();
+            return false;
+        }
+        case GameState::game_ongoing:
+        {
+            if (m_is_touch_pressed)
+            {
+                return false;
+            }
+
+            const Size visible_size = Director::getInstance()->getVisibleSize();
+            const Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+            const float half_screen = (origin.x + visible_size.width) * 0.5f;
+
+            const Vec2 touch_location = touch->getLocation();
+
+            if (touch_location.x <= half_screen)
+            {
+                m_engine->movePaddle(PaddleMovement::move_left);
+            }
+            else
+            {
+                m_engine->movePaddle(PaddleMovement::move_right);
+            }
+            m_is_touch_pressed = true;
+
+            return true;
+        }
+        case GameState::game_over:
+        {
+            return false;
+        }
     }
-    
-    const Size visible_size = Director::getInstance()->getVisibleSize();
-    const Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    const float half_screen = (origin.x + visible_size.width) * 0.5f;
-
-    const Vec2 touch_location = touch->getLocation();
-
-    if (touch_location.x <= half_screen)
-    {
-        m_engine->movePaddle(PaddleMovement::move_left);
-    }
-    else
-    {
-        m_engine->movePaddle(PaddleMovement::move_right);
-    }
-    m_is_touch_pressed = true;
-
-    return true;
+    return false;
 }
 
 void GamePlayLayer::touchMoved(Touch* touch, Event* event)

@@ -52,6 +52,7 @@ list(APPEND GAME_SOURCE
 	 Classes/Ball.cpp
 	 Classes/Brick.cpp
      Classes/Engine.cpp
+	 Classes/GameEntity.cpp
 	 Classes/GameSettings.cpp
 	 Classes/GamePlayScene.cpp
 	 Classes/GamePlayLayer.cpp
@@ -63,6 +64,7 @@ list(APPEND GAME_HEADER
 	 Classes/Ball.h
 	 Classes/Brick.h
      Classes/Engine.h
+	 Classes/GameEntity.h
 	 Classes/GameSettings.h
 	 Classes/GamePlayScene.h
 	 Classes/GamePlayLayer.h

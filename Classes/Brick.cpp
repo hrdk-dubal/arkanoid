@@ -3,9 +3,8 @@
 USING_NS_CC;
 
 Brick::Brick(const BrickType brick_type, const Vec2 &position, const Size &size) :
-	m_brick_type(brick_type),
-	m_position(position),
-	m_size(size)
+	GameEntity(position, size),
+	m_brick_type(brick_type)
 {
 	switch (m_brick_type)
 	{
@@ -24,19 +23,19 @@ Brick::Brick(const BrickType brick_type, const Vec2 &position, const Size &size)
 	}
 }
 
-BrickType Brick::getBrickType()
+BrickType Brick::getBrickType() const
 {
 	return m_brick_type;
 }
 
-Vec2 Brick::getPosition()
+bool Brick::isDestroyed() const
 {
-	return m_position;
+	return m_is_destroyed;
 }
 
-Size Brick::getSize()
+unsigned short Brick::getRemainingHits() const
 {
-	return m_size;
+	return m_remaining_hits;
 }
 
 //return reward points if brick gets destroyed due to current hit

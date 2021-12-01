@@ -3,16 +3,15 @@
 USING_NS_CC;
 
 Ball::Ball(const Vec2 &init_position, const Size &size, const Rect &game_area):
-		m_position(init_position),
-		m_size(size),
+		GameEntity(init_position, size),
 		m_game_area(game_area),
-		m_velocity(600.0f, 500.0f)
+		m_velocity(750.0f, 450.0f)
 {}
 
 void Ball::calculateMovement(const float dt)
 {
 	const Vec2 dp = m_velocity * dt;
-	const Vec2 new_position = m_position + dp;
+	const Vec2 new_position = getPosition() + dp;
 	const Size half_ball_size = m_size * 0.5f;
 	const float left_bound = m_game_area.getMinX();
 	const float right_bound = m_game_area.getMaxX();
@@ -31,7 +30,12 @@ void Ball::calculateMovement(const float dt)
 		return;
 	}
 
-	m_position = new_position;
+	setPosition(new_position);
+}
+
+void Ball::cancelLastMovement()
+{
+	setPosition(getPreviousPosition());
 }
 
 void Ball::bounceFromVerticalSurface()
@@ -42,9 +46,4 @@ void Ball::bounceFromVerticalSurface()
 void Ball::bounceFromHorizontalSurface()
 {
 	m_velocity.y = -m_velocity.y;
-}
-
-Vec2 Ball::getPosition() const
-{
-	return m_position;
 }

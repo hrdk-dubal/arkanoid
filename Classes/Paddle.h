@@ -2,6 +2,7 @@
 #define __PADDLE_H__
 
 #include "cocos2d.h"
+#include "GameEntity.h"
 
 enum class PaddleMovement
 {
@@ -10,7 +11,7 @@ enum class PaddleMovement
 	move_right = 1
 };
 
-class Paddle
+class Paddle : public GameEntity
 {
 public:
 	Paddle(const cocos2d::Vec2 &init_position, const cocos2d::Size &size, const float left_bound, 
@@ -19,11 +20,8 @@ public:
 	void move(const PaddleMovement movement_direction);
 	void stopPaddle();
 	void calculateMovement(const float dt);
-	cocos2d::Vec2 getPosition() const;
 
 private:
-	cocos2d::Vec2			m_position;
-	cocos2d::Size			m_size;
 	const float				m_left_bound;
 	const float				m_right_bound;
 	float					m_horizontal_velocity;

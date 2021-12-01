@@ -25,6 +25,9 @@ public:
 private:
 	Engine*				m_engine;
 	GameView*			m_game_view;
+	cocos2d::Label*		m_game_start_message;
+	cocos2d::Label*		m_game_restart_message;
+	cocos2d::Label*		m_score_display;
 	bool				m_is_touch_pressed;
 	cocos2d::Sprite*	m_paddle_sprite;
 	cocos2d::Sprite*	m_ball_sprite;
@@ -37,6 +40,9 @@ private:
 	void movePaddleBasedOnInput();
 	void createBrickLayout(const cocos2d::Rect& inner_gameplay_area);
 	void createBrick(const BrickType brick_type, const cocos2d::Vec2& position);
+	void initScoreDisplay();
+	void initStartMessage();
+	void initRestartMessage();
 };
 
 #endif //__GAMEPLAY_LAYER_H__

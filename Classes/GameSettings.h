@@ -11,6 +11,7 @@
 #define GAME_AREA_H 1536.0f
 #define BRICK_GAP 30.0f
 #define BRICK_LAYOUT_TOP_MARGIN 50.0f
+#define SCORE_MARGIN 50.0f
 
 class GameSettings
 {
@@ -24,6 +25,8 @@ public:
 
 	static const float				m_brick_gap;
 	static const float				m_brick_layout_top;
+
+	static const float				m_score_margin;
 };
 
 #endif //__GAME_SETTINGS_H__

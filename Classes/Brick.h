@@ -2,6 +2,7 @@
 #define __BRICK_H__
 
 #include "cocos2d.h"
+#include "GameEntity.h"
 
 enum class BrickType
 {
@@ -10,16 +11,17 @@ enum class BrickType
 	brick_green
 };
 
-class Brick
+class Brick : public GameEntity
 {
 public:
 	Brick(const BrickType brick_type, const cocos2d::Vec2 &position, const cocos2d::Size &size);
 
-	BrickType getBrickType();
-	cocos2d::Vec2 getPosition();
-	cocos2d::Size getSize();
+	BrickType getBrickType() const;
 
 	unsigned short registerHit(); //return reward points if brick gets destroyed due to current hit
+
+	bool isDestroyed() const;
+	unsigned short getRemainingHits() const;
 
 private:
 	BrickType				m_brick_type;
