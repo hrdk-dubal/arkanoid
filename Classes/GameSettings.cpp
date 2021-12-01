@@ -6,14 +6,18 @@ const int GameSettings::m_numRows = NUM_ROWS;
 
 const int GameSettings::m_numCols = NUM_COLS;
 
-brickType GameSettings::m_brickLayout[NUM_ROWS][NUM_COLS] = 
+BrickType GameSettings::m_brickLayout[NUM_ROWS][NUM_COLS] = 
 {
-	{ brickType::brick_gray, brickType::brick_gray, brickType::brick_green, brickType::brick_gray,brickType::brick_red },
-	{ brickType::brick_gray, brickType::brick_gray, brickType::brick_green, brickType::brick_gray,brickType::brick_red },
-	{ brickType::brick_gray, brickType::brick_gray, brickType::brick_green, brickType::brick_gray,brickType::brick_red },
-	{ brickType::brick_gray, brickType::brick_gray, brickType::brick_green, brickType::brick_gray,brickType::brick_red }
+	{ BrickType::brick_gray, BrickType::brick_gray, BrickType::brick_green, BrickType::brick_gray,BrickType::brick_red },
+	{ BrickType::brick_gray, BrickType::brick_gray, BrickType::brick_green, BrickType::brick_gray,BrickType::brick_red },
+	{ BrickType::brick_gray, BrickType::brick_gray, BrickType::brick_green, BrickType::brick_gray,BrickType::brick_red },
+	{ BrickType::brick_gray, BrickType::brick_gray, BrickType::brick_green, BrickType::brick_gray,BrickType::brick_red }
 };
 
 const Size GameSettings::m_game_size(GAME_AREA_W, GAME_AREA_H);
 
 const float GameSettings::m_paddle_height = PADDLE_HEIGHT;
+
+const float GameSettings::m_brick_gap = BRICK_GAP;
+
+const float GameSettings::m_brick_layout_top = BRICK_LAYOUT_TOP_MARGIN;

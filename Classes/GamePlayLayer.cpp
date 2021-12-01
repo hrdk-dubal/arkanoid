@@ -35,22 +35,18 @@ bool GamePlayLayer::init()
 
     const Rect inner_gameplay_area(calculateGamePlayArea());
 
-    const bool were_boundaries_initialized = initBoundarySprites(inner_gameplay_area);
-    if (!were_boundaries_initialized)
-    {
-        return false;
-    }
+    initBoundarySprites(inner_gameplay_area);
     
-    const bool was_paddle_initialized = initPaddle(inner_gameplay_area);
-    if (!was_paddle_initialized)
-    {
-        return false;
-    }
-
+    initPaddle(inner_gameplay_area);
+    
     const Vec2 init_paddle_position(inner_gameplay_area.getMidX(), GameSettings::m_paddle_height);
-    m_engine = new Engine(inner_gameplay_area, init_paddle_position);
+    const Size paddle_size(m_paddle_sprite->getContentSize());
+
+    m_engine = new Engine(inner_gameplay_area, init_paddle_position, paddle_size);
     
     m_game_view = new GameView(m_engine, m_paddle_sprite);
+
+    createBrickLayout(inner_gameplay_area);
 
     return true;
 }
@@ -67,6 +63,8 @@ Rect GamePlayLayer::calculateGamePlayArea() const
         GameSettings::m_game_size.width, GameSettings::m_game_size.height);
 
     auto temp_bound_sprite = Sprite::create("bounds.png");
+    CCASSERT(temp_bound_sprite != nullptr, "Error loading bounds.png for boundary size calculation.");
+    
     Size bound_sprite_size = temp_bound_sprite->getContentSize();
     const float half_boundary_width = bound_sprite_size.width * 0.5f;
     const float half_boundary_height = bound_sprite_size.height * 0.5f;
@@ -80,17 +78,21 @@ Rect GamePlayLayer::calculateGamePlayArea() const
     return inner_gameplay_area;
 }
 
-bool GamePlayLayer::initBoundarySprites(const Rect &inner_gameplay_area)
+void GamePlayLayer::initBoundarySprites(const Rect &inner_gameplay_area)
 {
     Rect visible_area(Director::getInstance()->getVisibleOrigin(),
                         Director::getInstance()->getVisibleSize());
         
     auto bottom_bound_sprite = Sprite::create("bounds.png");
+    CCASSERT(bottom_bound_sprite != nullptr, "Error loading bounds.png for bottom boundary.");
     auto top_bound_sprite = Sprite::create("bounds.png");
+    CCASSERT(top_bound_sprite != nullptr, "Error loading bounds.png for top boundary.");
     auto left_bound_sprite = Sprite::create("bounds.png");
+    CCASSERT(left_bound_sprite != nullptr, "Error loading bounds.png for left boundary.");
     auto right_bound_sprite = Sprite::create("bounds.png");
+    CCASSERT(right_bound_sprite != nullptr, "Error loading bounds.png for right boundary.");
     
-    Size bound_sprite_size = bottom_bound_sprite->getContentSize();
+    const Size bound_sprite_size(bottom_bound_sprite->getContentSize());
     
     const float horizontal_boundary_width = inner_gameplay_area.size.width + bound_sprite_size.width;
     const float horizontal_boundary_height = inner_gameplay_area.size.height + bound_sprite_size.height;
@@ -125,23 +127,17 @@ bool GamePlayLayer::initBoundarySprites(const Rect &inner_gameplay_area)
     this->addChild(right_bound_sprite);
   
     this->scheduleUpdate();
-
-    return true;
 }
 
-bool GamePlayLayer::initPaddle(const Rect& inner_gameplay_area)
+void GamePlayLayer::initPaddle(const Rect& inner_gameplay_area)
 {
     m_paddle_sprite = Sprite::create("paddle.png");
-    if (!m_paddle_sprite)
-    {
-        CCLOG("Error loading bounds.png for paddle.");
-        return false;
-    }
+    CCASSERT(m_paddle_sprite != nullptr, "Error loading for paddle sprite.");
+    
     m_paddle_sprite->setPosition(inner_gameplay_area.getMidX(),
         inner_gameplay_area.getMinY() + GameSettings::m_paddle_height);
 
     this->addChild(m_paddle_sprite);
-    return true;
 }
 
 void GamePlayLayer::onEnter()
@@ -171,7 +167,7 @@ bool GamePlayLayer::touchBegan(Touch* touch, Event* event)
     {
         return false;
     }
-
+    
     const Size visible_size = Director::getInstance()->getVisibleSize();
     const Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -188,8 +184,6 @@ bool GamePlayLayer::touchBegan(Touch* touch, Event* event)
         m_engine->movePaddle(PaddleMovement::move_right);
     }
     m_is_touch_pressed = true;
-
-    CCLOG("touch begin");
 
     return true;
 }
@@ -218,4 +212,62 @@ void GamePlayLayer::update(float dt)
     m_engine->update(dt);
 
     m_game_view->updateView();
+}
+
+void GamePlayLayer::createBrickLayout(const cocos2d::Rect& inner_gameplay_area)
+{
+    auto temp_brick = Sprite::create("gray_brick.png");
+    CCASSERT(temp_brick != nullptr, "Error loading for brick sprite for brick size calculation.");
+    const Size brick_size(temp_brick->getContentSize());
+    const Size half_brick_size = brick_size * 0.5;
+
+    const float brick_layout_bound_x = (GameSettings::m_numCols * brick_size.width) +
+        ((GameSettings::m_numCols - 1) * GameSettings::m_brick_gap);
+    const float brick_layout_bound_y = (GameSettings::m_numRows * brick_size.height) +
+        ((GameSettings::m_numRows - 1) * GameSettings::m_brick_gap);
+
+    const float leftmost_brick_x_position = inner_gameplay_area.getMidX() -
+        (brick_layout_bound_x * 0.5f) + half_brick_size.width;
+    float x_position = leftmost_brick_x_position;
+
+    float y_position = inner_gameplay_area.getMaxY() - GameSettings::m_brick_layout_top - half_brick_size.height;
+
+    for (int row = 0; row < GameSettings::m_numRows; row++)
+    {
+        for (int col = 0; col < GameSettings::m_numCols; col++)
+        {
+            const Vec2 brick_position(x_position, y_position);
+            createBrick(GameSettings::m_brickLayout[row][col], brick_position);
+            x_position += brick_size.width + GameSettings::m_brick_gap;
+        }
+        x_position = leftmost_brick_x_position;
+        y_position -= (brick_size.height + GameSettings::m_brick_gap);
+    }
+}
+
+void GamePlayLayer::createBrick(const BrickType brick_type, const cocos2d::Vec2& position)
+{
+    std::string brick_image = "";
+    switch (brick_type)
+    {
+    case BrickType::brick_gray:
+        brick_image = "gray_brick.png";
+        break;
+    case BrickType::brick_green:
+        brick_image = "green_brick.png";
+        break;
+    case BrickType::brick_red:
+        brick_image = "red_brick.png";
+        break;
+    }
+
+    auto brick_sprite = Sprite::create(brick_image.c_str());
+    CCASSERT(brick_sprite != nullptr, "Error loading brick image.");
+
+    m_game_view->addBrickSprite(brick_sprite);
+    const Size brick_size(brick_sprite->getContentSize());
+    m_engine->createBrick(brick_type, position, brick_size);
+
+    brick_sprite->setPosition(position);
+    this->addChild(brick_sprite);
 }

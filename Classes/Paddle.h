@@ -13,7 +13,7 @@ enum class PaddleMovement
 class Paddle
 {
 public:
-	Paddle(const cocos2d::Vec2 &init_position, const float left_bound, 
+	Paddle(const cocos2d::Vec2 &init_position, const cocos2d::Size &size, const float left_bound, 
 		const float right_bound);
 
 	void move(const PaddleMovement movement_direction);
@@ -23,6 +23,7 @@ public:
 
 private:
 	cocos2d::Vec2			m_position;
+	cocos2d::Size			m_size;
 	const float				m_left_bound;
 	const float				m_right_bound;
 	float					m_horizontal_velocity;

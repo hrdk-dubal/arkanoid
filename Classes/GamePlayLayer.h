@@ -29,9 +29,11 @@ private:
 	cocos2d::Sprite*	m_paddle_sprite;
 
 	cocos2d::Rect calculateGamePlayArea() const;
-	bool initBoundarySprites(const cocos2d::Rect &inner_gameplay_area);
-	bool initPaddle(const cocos2d::Rect& inner_gameplay_area);
+	void initBoundarySprites(const cocos2d::Rect &inner_gameplay_area);
+	void initPaddle(const cocos2d::Rect& inner_gameplay_area);
 	void movePaddleBasedOnInput();
+	void createBrickLayout(const cocos2d::Rect& inner_gameplay_area);
+	void createBrick(const BrickType brick_type, const cocos2d::Vec2& position);
 };
 
 #endif //__GAMEPLAY_LAYER_H__

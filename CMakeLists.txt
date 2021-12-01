@@ -49,6 +49,7 @@ endif()
 # add cross-platforms source files and header files 
 list(APPEND GAME_SOURCE
      Classes/AppDelegate.cpp
+	 Classes/Brick.cpp
      Classes/Engine.cpp
 	 Classes/GameSettings.cpp
 	 Classes/GamePlayScene.cpp
@@ -58,6 +59,7 @@ list(APPEND GAME_SOURCE
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
+	 Classes/Brick.h
      Classes/Engine.h
 	 Classes/GameSettings.h
 	 Classes/GamePlayScene.h

@@ -4,21 +4,26 @@
 #include "Engine.h"
 #include "cocos2d.h"
 #include "Paddle.h"
+#include "Brick.h"
 
 class Engine
 {
 public:
-	Engine(const cocos2d::Rect &gameplay_area, const cocos2d::Vec2 &paddle_init_position);
+	Engine(const cocos2d::Rect &gameplay_area, const cocos2d::Vec2 &paddle_init_position, 
+		const cocos2d::Size &paddle_size);
+	~Engine();
 
 	void movePaddle(const PaddleMovement movement_direction);
 	void stopPaddle();
 	cocos2d::Vec2 getPaddlePosition() const;
 
 	void update(const float dt);
+	void createBrick(const BrickType brick_type, const cocos2d::Vec2& position, const cocos2d::Size& size);
 
 private:
-	cocos2d::Rect m_gameplay_area;
-	Paddle m_paddle;
+	cocos2d::Rect			m_gameplay_area;
+	Paddle					m_paddle;
+	std::vector<Brick>		m_all_bricks;
 };
 
 #endif // __ENGINE_H__
