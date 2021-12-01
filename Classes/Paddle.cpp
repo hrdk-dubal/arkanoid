@@ -2,9 +2,9 @@
 
 USING_NS_CC;
 
-Paddle::Paddle(const Vec2 &initPosition, Sprite* sprite, const float left_bound, 
+Paddle::Paddle(Sprite* sprite, const float left_bound, 
 	const float right_bound) :
-		m_position(initPosition),
+		m_position(sprite->getPosition()),
 		m_sprite(sprite),
 		m_left_bound(left_bound),
 		m_right_bound(right_bound),

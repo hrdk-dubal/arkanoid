@@ -1,8 +1,10 @@
 #include "Engine.h"
 
-Engine::Engine(const cocos2d::Vec2 &paddle_position, cocos2d::Sprite* paddle_sprite,
-	const float left_bound, const float right_bound) :
-	m_paddle(paddle_position, paddle_sprite, left_bound, right_bound)
+USING_NS_CC;
+
+Engine::Engine(Rect &gameplay_area, Sprite* paddle_sprite) :
+	m_gameplay_area(gameplay_area),
+	m_paddle(paddle_sprite, gameplay_area.getMinX(), gameplay_area.getMaxX())
 {}
 
 void Engine::acceleratePaddle()

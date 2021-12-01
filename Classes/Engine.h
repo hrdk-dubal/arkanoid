@@ -8,8 +8,7 @@
 class Engine
 {
 public:
-	Engine(const cocos2d::Vec2 &paddle_position, cocos2d::Sprite* paddle_sprite,
-		const float left_bound, const float right_bound);
+	Engine(cocos2d::Rect &gameplay_area, cocos2d::Sprite* paddle_sprite);
 
 	void acceleratePaddle();
 	void deceleratePaddle();
@@ -17,6 +16,7 @@ public:
 	void update(const float dt);
 
 private:
+	cocos2d::Rect m_gameplay_area;
 	Paddle m_paddle;
 };
 

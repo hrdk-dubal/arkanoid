@@ -6,7 +6,7 @@
 class Paddle
 {
 public:
-	Paddle(const cocos2d::Vec2 &initPosition, cocos2d::Sprite* sprite, const float left_bound, 
+	Paddle(cocos2d::Sprite* sprite, const float left_bound, 
 		const float right_bound);
 
 	void accelerate();
